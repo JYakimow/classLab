@@ -15,6 +15,8 @@ int main(int argc, char** argv)
     json parsedJson = json::parse(jsonString);
     Card* theCards[parsedJson.size()];
 
+    int len = parsedJson.size();
+
     if(parsedJson.is_array())
     {
         for(int i = 0; i < parsedJson.size(); i++)
@@ -26,11 +28,34 @@ int main(int argc, char** argv)
                 int attack = currValue.value("attack", -1);
                 int defense = currValue.value("health", -1);
                 int manaCost = currValue.value("cost", -1);
-                theCards[i] = new Card(name, manaCost, attack, defense);
-                theCards[i]->display();
+                string type = currValue.value("type", "N/A");
+                theCards[i] = new Card(name, manaCost, attack, defense, type);
+                //theCards[i]->display();
             }
         }
     }
     cout << "Number of Cards: " << parsedJson.size() << endl;
+
+    for (int i = 0; i < parsedJson.size(); i++)
+    {
+        int temp;
+        int follower;
+        for(int curr = 1; curr < parsedJson.size(); curr++)
+        {
+            follower = curr;
+            while(follower > 0 && theCards[follower]->getDefense() < theCards[follower-1]->getDefense())
+            {
+                theCards[temp] = theCards[follower];
+                theCards[follower] = theCards[follower-1];
+                theCards[follower-1] = theCards[temp];
+                follower--;
+            }
+        }
+    }
+    //display
+    for(int i = 0; i < len; i++)
+    {
+        theCards[i]->display();
+    }
     return 0;
 }

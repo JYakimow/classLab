@@ -36,6 +36,6 @@ int main()
     cout << "Last Name: " << parsedJson.value("lastName", "oops") << endl;
     cout << "Student ID: " << parsedJson.value("StudentID", 0) << endl;
     cout << "Department: " << parsedJson.value("Department", "oops") << endl;
-          
+
     return 0;
 }
